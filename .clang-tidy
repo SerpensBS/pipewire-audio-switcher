@@ -1,0 +1,4 @@
+Checks: '*,-altera-*,-llvmlibc-*,-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,-fuchsia-trailing-return' 
+CheckOptions:
+  - key: llvm-include-order.Style
+    value: 'google'

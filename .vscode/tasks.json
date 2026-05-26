@@ -1,0 +1,118 @@
+{
+  "tasks": [
+    {
+      "label": "Create simlink to compile_command.json",
+      "type": "shell",
+      "command": "ln",
+      "hide": true,
+      "args": [
+        "-sf",
+        "${workspaceFolder}/build/${input:buildType}/compile_commands.json",
+        "${workspaceFolder}/compile_commands.json"
+      ]
+    },
+    {
+      "label": "CMake: Configure",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--preset=${input:buildType}",
+        "${workspaceFolder}"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Настройка CMake с выбранным пресетом",
+      "components": [
+        "default",
+        "display_duration"
+      ]
+    },
+    {
+      "label": "CMake: Build",
+      "type": "shell",
+      "command": "cmake",
+      "use_terminal": true,
+      "close_on_exit": false,
+      "args": [
+        "--build",
+        "--preset=${input:buildType}"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "CMake: Configure",
+        "Create simlink to compile_command.json"
+      ],
+      "detail": "Сборка проекта"
+    },
+    {
+      "label": "CMake: Clean",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "--preset=${input:buildType}",
+        "--target",
+        "clean"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Очистка сборки"
+    },
+    {
+      "label": "CMake: Build All Configurations",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--workflow",
+        "--preset=multi-config"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "detail": "Сборка всех конфигураций"
+    },
+    {
+      "label": "Run Program",
+      "type": "shell",
+      "command": "${workspaceFolder}/build/${input:buildType}/${workspaceFolderBasename}",
+      "group": "test",
+      "problemMatcher": [],
+      "detail": "Запуск собранной программы"
+    },
+    {
+      "label": "CMake: Test",
+      "type": "shell",
+      "command": "ctest",
+      "args": [
+        "--output-on-failure",
+        "-C",
+        "Debug"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/build/${input:buildType}/tests"
+      },
+      "group": "test",
+      "dependsOn": [
+        "CMake: Build"
+      ],
+      "dependsOrder": "sequence"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "buildType",
+      "type": "pickString",
+      "description": "Выберите тип сборки",
+      "options": [
+        "debug",
+        "release"
+      ],
+      "default": "debug"
+    }
+  ]
+}
