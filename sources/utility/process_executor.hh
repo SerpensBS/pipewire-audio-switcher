@@ -1,3 +1,7 @@
+#ifndef PAS_UTILITY_PROCESS_EXECUTOR_HH
+#define PAS_UTILITY_PROCESS_EXECUTOR_HH
+
+#include <chrono>
 #include <cstddef>
 #include <expected>
 #include <filesystem>
@@ -28,7 +32,9 @@ class ProcessExecutor {
   [[nodiscard]]
   auto Execute(const std::filesystem::path& command,
                const std::vector<std::string>& args,
-               std::size_t max_return_buffer_size) const -> std::expected<std::string, Error>;
+               std::size_t max_return_buffer_size,
+               std::chrono::milliseconds timeout) const -> std::expected<std::string, Error>;
 };
 
 }  // namespace utility
+#endif
