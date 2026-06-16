@@ -1,7 +1,9 @@
 #ifndef PAS_FILESYSTEM_FILEREADER_HH
 #define PAS_FILESYSTEM_FILEREADER_HH
 
+#include <cstddef>
 #include <filesystem>
+#include <limits>
 #include <string>
 
 namespace pas::filesystem {
@@ -18,7 +20,9 @@ class FileReader {
    * @throws std::runtime_error Если файл отсутствует или не открывается
    * @throws std::ios_base::failure в случае ошибок FAILBIT и BADBIT при чтение файла
    */
-  static auto Read(const std::filesystem::path& file_path) -> std::string;
+  static auto Read(const std::filesystem::path& file_path,
+                   std::size_t max_readed_bytes_count = std::numeric_limits<std::size_t>::max())
+      -> std::string;
 };
 
 }  // namespace pas::filesystem
