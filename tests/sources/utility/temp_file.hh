@@ -3,7 +3,6 @@
 
 #include <filesystem>
 #include <span>
-#include <string>
 #include <string_view>
 
 namespace pas::tests::utility {
@@ -21,13 +20,6 @@ class TempFile {
   TempFile(const TempFile&) = delete;
   auto operator=(const TempFile&) -> TempFile& = delete;
   auto operator=(TempFile&&) -> TempFile& = delete;
-
-  /**
-   * @brief Читает файл.
-   * @return Содержимое файла
-   */
-  [[nodiscard]]
-  auto Read() const -> std::string;
 
   /**
    * @brief Путь к файлу.

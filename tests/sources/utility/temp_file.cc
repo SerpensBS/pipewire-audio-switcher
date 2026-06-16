@@ -4,10 +4,8 @@
 #include <format>
 #include <fstream>
 #include <ios>
-#include <iterator>
 #include <span>
 #include <stdexcept>
-#include <string>
 #include <string_view>
 
 namespace pas::tests::utility {
@@ -26,20 +24,6 @@ TempFile::TempFile(std::string_view file_name, std::span<const char> file_conten
 
   file.exceptions(std::ios::failbit | std::ios::badbit);
   file.write(file_content.data(), static_cast<std::streamsize>(file_content.size()));
-}
-
-[[nodiscard]]
-auto TempFile::Read() const -> std::string {
-  std::ifstream file(file_path_);
-
-  if (not file.is_open()) {
-    throw std::ios_base::failure(
-        std::format("Error during attempt open file {}", file_path_.c_str()));
-  }
-
-  file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-  return std::string{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 }
 
 [[nodiscard]]
