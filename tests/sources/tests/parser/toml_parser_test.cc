@@ -1,0 +1,55 @@
+#include "parser/toml_parser.hh"
+
+#include <gtest/gtest.h>
+
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
+#include "config/configuration.hh"
+#include "config/device_config.hh"
+
+using namespace std::string_literals;
+
+namespace {
+
+class TomlParserTest : public ::testing::Test {
+ protected:
+  static auto ConvertConfigurationToString(const pas::config::Configuration& config) -> std::string;
+};
+
+}  // namespace
+
+TEST_F(TomlParserTest, ParseSuccess) {
+  const pas::config::Configuration expected_config{
+      {{"Device1", pas::config::DeviceConfiguration{"icon1"s}},
+       {"Device2", pas::config::DeviceConfiguration{"icon2"s}},
+       {"Device3", pas::config::DeviceConfiguration{"icon3"s}}}};
+
+  const std::string config = ConvertConfigurationToString(expected_config);
+
+  auto parsed_config = pas::parser::TomlParser::ParseConfiguration(config);
+
+  ASSERT_EQ(expected_config.devices.size(), parsed_config.devices.size());
+
+  for (const auto& [key, device] : expected_config.devices) {
+    ASSERT_EQ(device.icon, parsed_config.devices.at(key).icon);
+  }
+}
+
+TEST_F(TomlParserTest, EmptyConfigurationParse) {
+  ASSERT_THROW(pas::parser::TomlParser::ParseConfiguration(""s), std::runtime_error);
+}
+
+auto TomlParserTest::ConvertConfigurationToString(const pas::config::Configuration& config)
+    -> std::string {
+  std::stringstream raw_configuration_stream;
+  for (const auto& [key, device] : config.devices) {
+    raw_configuration_stream << "[[devices]]"s;
+    raw_configuration_stream << "\nname = \""s << key << "\"";
+    raw_configuration_stream << "\nicon = \"" << device.icon << "\"";
+    raw_configuration_stream << "\n\n ";
+  }
+
+  return raw_configuration_stream.str();
+}
