@@ -8,6 +8,7 @@
 - Make >= 4.4.1
 - CMake >=4.3.0
 - Clangd >=22.1.0
+- Git >= 2.54.0
 
 **Тесты:**
 - GNU coreutils >= 9.11

@@ -20,9 +20,12 @@ target_include_directories(
 
 # Загружаем и собираем внешние библиотеки.
 include(cmake/external_libs.cmake)
+include(../cmake/external_libs.cmake)
 
 # Подключаем библиотеки.
-target_link_libraries(${TARGET_NAME} PRIVATE gtest gtest_main)
+target_link_libraries(
+    ${TARGET_NAME} PRIVATE gtest gtest_main tomlplusplus::tomlplusplus
+)
 
 # Подключаем тесты.
 include(CTest)

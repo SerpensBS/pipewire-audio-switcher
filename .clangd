@@ -4,4 +4,6 @@ Diagnostics:
   Includes:
     IgnoreHeader: 
       # Внутренние заголовки GCC
-      - '.*/include/c\+\+/.*/*/.*' 
+      - '.*/include/c\+\+/[^/]*/.*/.*'
+      # Внутренние заголовки библиотек
+      - '.*/impl/.*'
