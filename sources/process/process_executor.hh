@@ -1,5 +1,5 @@
-#ifndef PAS_UTILITY_PROCESS_EXECUTOR_HH
-#define PAS_UTILITY_PROCESS_EXECUTOR_HH
+#ifndef PAS_PROCESS_PROCESS_EXECUTOR_HH
+#define PAS_PROCESS_PROCESS_EXECUTOR_HH
 
 #include <chrono>
 #include <cstddef>
@@ -25,14 +25,13 @@ class ProcessExecutor {
    *
    * @param application Вызываемое приложение
    * @param args Аргументы передаваемые вызываемому приложению
-   * @param max_return_buffer_size Максимальный размер выходного буфера
+   * @param timeout Таймаут операции
    *
    * @return возвращает вывод приложения, в случае ошибки также возвращает код ошибки
    */
   [[nodiscard]]
   auto Execute(const std::filesystem::path& command,
                const std::vector<std::string>& args,
-               std::size_t max_return_buffer_size,
                std::chrono::milliseconds timeout) const -> std::expected<std::string, Error>;
 };
 

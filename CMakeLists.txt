@@ -10,7 +10,10 @@ add_executable(${TARGET_NAME} ${SOURCES_DIR}/main.cc ${SOURCES})
 
 target_include_directories(${TARGET_NAME} PRIVATE ${SOURCES_DIR})
 
-include(cmake/external_libs.cmake)
-target_link_libraries(${TARGET_NAME} PRIVATE tomlplusplus::tomlplusplus)
+# Подключаем внешние библиотеки.
+include(${PROJECT_SOURCE_DIR}/cmake/external_libs.cmake)
+target_link_libraries(
+    ${TARGET_NAME} PRIVATE Boost::process tomlplusplus::tomlplusplus
+)
 
 add_subdirectory(tests)
