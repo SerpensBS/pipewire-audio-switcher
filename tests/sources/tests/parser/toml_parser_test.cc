@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include <sstream>
-#include <stdexcept>
 #include <string>
 
 #include "config/configuration.hh"
@@ -38,7 +37,9 @@ TEST_F(TomlParserTest, ParseSuccess) {
 }
 
 TEST_F(TomlParserTest, EmptyConfigurationParse) {
-  ASSERT_THROW(pas::parser::TomlParser::ParseConfiguration(""s), std::runtime_error);
+  auto parsed_config = pas::parser::TomlParser::ParseConfiguration(""s);
+
+  ASSERT_TRUE(parsed_config.devices.empty());
 }
 
 auto TomlParserTest::ConvertConfigurationToString(const pas::config::Configuration& config)

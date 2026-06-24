@@ -1,6 +1,5 @@
 #include "toml_parser.hh"
 
-#include <stdexcept>
 #include <string_view>
 #include <toml++/toml.hpp>
 #include <tuple>
@@ -18,7 +17,7 @@ auto TomlParser::ParseConfiguration(std::string_view configuration) -> config::C
   auto* devices = table["devices"].as_array();
 
   if (nullptr == devices) {
-    throw std::runtime_error("Parse Config Error: get devices list failure.");
+    return result;
   }
 
   // Перебираем все найденные устройства.
