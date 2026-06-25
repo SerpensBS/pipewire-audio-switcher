@@ -79,7 +79,7 @@ TEST_F(ProcessExecutorTest, ProcessTimeoutFailure) {
 }
 
 TEST_F(ProcessExecutorTest, PrematureExitDueToTimeout) {
-  constexpr std::chrono::seconds kProcessRunDuration{1};
+  constexpr std::chrono::seconds kProcessRunDuration{2};
   const auto deadline = std::chrono::steady_clock::now() + kProcessRunDuration;
 
   auto response = executor_.Execute(
@@ -101,7 +101,8 @@ TEST_F(ProcessExecutorTest, ProcessKillAfterTimeout) {
    * @throw std::runtime_error В случае ошибки при вызове процесса pgrep
    */
   auto get_pids = [this](const std::string& process_name) -> std::set<std::string> {
-    auto pgrep_result = executor_.Execute("/bin/pgrep"s, {process_name}, kExecuteTimeout);
+    auto pgrep_result = executor_.Execute(
+        "/bin/sh"s, {"-c", std::format("/bin/pgrep {} || true", process_name)}, kExecuteTimeout);
 
     if (not pgrep_result.has_value()) {
       throw std::runtime_error("pgrep not returned result");
@@ -119,15 +120,18 @@ TEST_F(ProcessExecutorTest, ProcessKillAfterTimeout) {
   // Получаем список ID процессов sleep до вызова тестового метода:
   auto pgrep_before_run_result = get_pids(kProcessName);
 
-  constexpr std::chrono::seconds kProcessRunDuration{1};
-  constexpr std::chrono::milliseconds kProcessRunTimeout{2};
+  // Запускаем sleep.
+  constexpr std::chrono::seconds kProcessRunDuration{2};
+  constexpr std::chrono::milliseconds kProcessRunTimeout{100};
   auto response = executor_.Execute(
       kProcessName, {std::to_string(kProcessRunDuration.count())}, kProcessRunTimeout);
 
+  // Проверяем что процесс упал по таймауту.
   ASSERT_FALSE(response.has_value());
   ASSERT_EQ(response.error().code, std::errc::timed_out);
 
-  // Получаем список ID процессов sleep после вызова тестового метода и сравниваем оба списка:
+  // Получаем список ID процессов sleep после вызова тестового метода и сравниваем оба списка.
+  // Если они идентичны - значит зависший процесс был убит корректно.
   auto pgrep_after_run_result = get_pids(kProcessName);
   ASSERT_EQ(pgrep_before_run_result, pgrep_after_run_result);
 }

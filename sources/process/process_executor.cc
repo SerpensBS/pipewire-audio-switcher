@@ -1,12 +1,10 @@
 #include "process_executor.hh"
 
-#include <boost/asio/any_io_executor.hpp>
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/error.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/asio/readable_pipe.hpp>
-#include <boost/process.hpp>
 #include <boost/process/v2/detail/config.hpp>
 #include <boost/process/v2/process.hpp>
 #include <boost/process/v2/stdio.hpp>
@@ -18,6 +16,7 @@
 #include <exception>
 #include <expected>
 #include <filesystem>
+#include <future>
 #include <string>
 #include <system_error>
 #include <utility>
@@ -30,26 +29,36 @@ auto ProcessExecutor::Execute(const std::filesystem::path& command,
     -> std::expected<std::string, Error> {
   boost::asio::io_context ioc;
   boost::asio::readable_pipe rx_pipe{ioc};
-
   std::string output;
+
   try {
-    boost::process::process proc(
+    boost::process::process process(
         ioc,
         command.string(),
         args,
         boost::process::process_stdio{.in = {}, .out = rx_pipe, .err = rx_pipe});
 
-    boost::system::error_code rx_pipe_error_code;
-    boost::asio::read(rx_pipe, boost::asio::dynamic_buffer(output), rx_pipe_error_code);
+    auto read_pipe_future = std::async(std::launch::async, [&]() -> boost::system::error_code {
+      boost::system::error_code rx_pipe_error_code;
+      boost::asio::read(rx_pipe, boost::asio::dynamic_buffer(output), rx_pipe_error_code);
+      return rx_pipe_error_code;
+    });
 
-    proc.wait();
-    int process_exit_code{proc.exit_code()};
+    auto future_status = read_pipe_future.wait_for(timeout);
 
-    if (rx_pipe_error_code != boost::asio::error::eof) {
-      throw boost::process::system_error(rx_pipe_error_code, output);
+    if (std::future_status::timeout == future_status) {
+      process.terminate();
+      throw boost::process::system_error(std::make_error_code(std::errc::timed_out), output);
     }
+
+    const int process_exit_code{process.wait()};
+    const auto rx_pipe_error_code = read_pipe_future.get();
+
     if (EXIT_SUCCESS != process_exit_code) {
-      rx_pipe_error_code = {process_exit_code, boost::system::generic_category()};
+      return std::unexpected<Error>({.code = {process_exit_code, boost::system::generic_category()},
+                                     .message = std::move(output)});
+    }
+    if (rx_pipe_error_code != boost::asio::error::eof) {
       throw boost::process::system_error(rx_pipe_error_code, output);
     }
   } catch (const boost::process::system_error& exception) {
