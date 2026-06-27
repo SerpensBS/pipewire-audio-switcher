@@ -94,7 +94,7 @@
         "Debug"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/build/${input:buildType}/tests"
+        "cwd": "${workspaceFolder}/build/${input:buildType}/targets/core/tests"
       },
       "group": "test",
       "dependsOn": [

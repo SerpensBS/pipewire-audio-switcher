@@ -3,7 +3,7 @@
 
 #include <string_view>
 
-#include "config/configuration.hh"
+#include "pas-core/config/configuration.hh"
 
 namespace pas::parser {
 
