@@ -7,7 +7,7 @@
       "hidden": true,
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "toolchainFile": "${sourceDir}/toolchains/linux-x86-clangd-toolchain.cmake",
+      "toolchainFile": "${sourceDir}/cmake/linux-x86-clangd-toolchain.cmake",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }

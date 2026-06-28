@@ -11,11 +11,15 @@ add_executable(${TARGET_NAME} ${SOURCES})
 # Определяем видимость директорий.
 target_include_directories(${TARGET_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/sources)
 
+# Настройки сборки проекта.
+target_link_libraries(${TARGET_NAME} PRIVATE pas::project::properties)
+set_target_properties(${TARGET_NAME} PROPERTIES CXX_EXTENSIONS OFF)
+
 # Загружаем и собираем внешние библиотеки.
 include(${PROJECT_SOURCE_DIR}/cmake/external_libs.cmake)
 
 # Подключаем библиотеки.
-target_link_libraries(${TARGET_NAME} PRIVATE gtest gtest_main pas-core)
+target_link_libraries(${TARGET_NAME} PRIVATE gtest gtest_main pas::core)
 
 # Подключаем тесты.
 include(CTest)

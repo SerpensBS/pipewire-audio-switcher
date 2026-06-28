@@ -6,7 +6,12 @@ set(SOURCES_DIR ${PROJECT_SOURCE_DIR}/sources)
 include(${PROJECT_SOURCE_DIR}/cmake/sources.cmake)
 
 set(TARGET_NAME ${PROJECT_NAME})
-add_library(${TARGET_NAME} ${SOURCES})
+add_library(${TARGET_NAME} STATIC ${SOURCES})
+add_library(pas::core ALIAS ${TARGET_NAME})
+
+# Настройки сборки проекта.
+target_link_libraries(${TARGET_NAME} PRIVATE pas::project::properties)
+set_target_properties(${TARGET_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 # Открываем директорию с исходниками.
 set(INCLUDES_DIR ${PROJECT_SOURCE_DIR}/includes)
