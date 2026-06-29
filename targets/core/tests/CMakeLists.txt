@@ -22,6 +22,5 @@ include(${PROJECT_SOURCE_DIR}/cmake/external_libs.cmake)
 target_link_libraries(${TARGET_NAME} PRIVATE gtest gtest_main pas::core)
 
 # Подключаем тесты.
-include(CTest)
 include(GoogleTest)
 gtest_discover_tests(${TARGET_NAME})
