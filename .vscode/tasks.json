@@ -32,6 +32,16 @@
       "group": "test",
       "detail": "Запуск тестов"
     },
+    {
+      "label": "CMake: Benchmark",
+      "type": "shell",
+      "command": "scripts/run_benchmarks.sh",
+      "args": [
+        "--preset=${input:buildType}"
+      ],
+      "group": "test",
+      "detail": "Запуск бенчмарка"
+    }
   ],
   "inputs": [
     {
