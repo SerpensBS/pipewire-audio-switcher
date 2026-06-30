@@ -7,7 +7,7 @@
       "hidden": true,
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "toolchainFile": "${sourceDir}/toolchains/linux-x86-clangd-toolchain.cmake",
+      "toolchainFile": "${sourceDir}/cmake/linux-x86-clangd-toolchain.cmake",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
@@ -29,7 +29,7 @@
       "description": "Release build with optimizations",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG -Wall -Wextra -Werror"
       }
     }
   ],

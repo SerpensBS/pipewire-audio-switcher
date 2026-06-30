@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 4.3.0)
 project(pipewire-audio-switcher)
 
-# Подключаем исходники проекта.
-set(SOURCES_DIR ${PROJECT_SOURCE_DIR}/sources)
-include(${PROJECT_SOURCE_DIR}/cmake/sources.cmake)
-
 set(TARGET_NAME ${PROJECT_NAME})
-add_executable(${TARGET_NAME} ${SOURCES_DIR}/main.cc ${SOURCES})
+set(PROJECTS_SOURCES_DIR targets)
 
-target_include_directories(${TARGET_NAME} PRIVATE ${SOURCES_DIR})
+add_executable(${TARGET_NAME} ${PROJECTS_SOURCES_DIR}/main.cc)
 
-include(cmake/external_libs.cmake)
-target_link_libraries(${TARGET_NAME} PRIVATE tomlplusplus::tomlplusplus)
+# Настройки сборки проекта.
+include(cmake/options.cmake)
+target_link_libraries(${TARGET_NAME} PRIVATE pas::project::properties)
+set_target_properties(${TARGET_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
-add_subdirectory(tests)
+target_link_libraries(${TARGET_NAME} PRIVATE pas::core)
+
+add_subdirectory(${PROJECTS_SOURCES_DIR}/core)

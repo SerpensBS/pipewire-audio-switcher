@@ -1,12 +1,12 @@
-#include "parser/toml_parser.hh"
+#include "pas-core/parser/toml_parser.hh"
 
 #include <gtest/gtest.h>
 
 #include <sstream>
 #include <string>
 
-#include "config/configuration.hh"
-#include "config/device_config.hh"
+#include "pas-core/config/configuration.hh"
+#include "pas-core/config/device_config.hh"
 
 using namespace std::string_literals;
 
