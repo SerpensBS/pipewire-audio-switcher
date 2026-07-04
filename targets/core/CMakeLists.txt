@@ -24,6 +24,9 @@ target_include_directories(
 
 # Подключаем внешние библиотеки.
 include(${PROJECT_SOURCE_DIR}/cmake/external_libs.cmake)
-target_link_libraries(${TARGET_NAME} PRIVATE tomlplusplus::tomlplusplus)
+target_link_libraries(
+    ${TARGET_NAME} PRIVATE Boost::process tomlplusplus::tomlplusplus
+)
 
 add_subdirectory(tests)
+add_subdirectory(benchmarks)
