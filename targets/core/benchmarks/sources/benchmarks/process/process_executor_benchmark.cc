@@ -13,7 +13,7 @@ class ProcessExecutorBenchmark : public benchmark::Fixture {
  protected:
   static constexpr std::chrono::milliseconds kExecuteTimeout{200};
 
-  utility::ProcessExecutor executor_;
+  pas::core::process::ProcessExecutor executor_;
 };
 
 // NOLINTNEXTLINE(cert-err58-cpp)

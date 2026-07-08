@@ -25,7 +25,7 @@ BENCHMARK_F(FileReaderBenchmark, ReadFileFromRAM)(benchmark::State& state) {
   auto file = pas::benchmark::utility::TempFile("ReadSuccess", kContent);
 
   for (auto current_state : state) {
-    auto result = pas::filesystem::FileReader::Read(file.GetFullPath());
+    auto result = pas::core::filesystem::FileReader::Read(file.GetFullPath());
     benchmark::DoNotOptimize(result);
   }
 }
@@ -35,7 +35,7 @@ BENCHMARK_F(FileReaderBenchmark, ReadEmptyFileFromRAM)(benchmark::State& state) 
   auto file = pas::benchmark::utility::TempFile("ReadSuccess", {});
 
   for (auto current_state : state) {
-    auto result = pas::filesystem::FileReader::Read(file.GetFullPath());
+    auto result = pas::core::filesystem::FileReader::Read(file.GetFullPath());
     benchmark::DoNotOptimize(result);
   }
 }
@@ -46,7 +46,7 @@ BENCHMARK_F(FileReaderBenchmark, ReadNonExistFileFromRAM)(benchmark::State& stat
 
   for (auto current_state : state) {
     try {
-      auto result = pas::filesystem::FileReader::Read(kNonExistFileName);
+      auto result = pas::core::filesystem::FileReader::Read(kNonExistFileName);
       benchmark::DoNotOptimize(result);
       // NOLINTNEXTLINE(bugprone-empty-catch)
     } catch (...) {

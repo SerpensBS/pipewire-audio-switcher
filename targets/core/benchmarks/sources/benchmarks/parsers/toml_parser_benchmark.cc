@@ -13,20 +13,21 @@ using namespace std::string_literals;
 
 class TomlParserBenchmark : public benchmark::Fixture {
  protected:
-  static auto ConvertConfigurationToString(const pas::config::Configuration& config) -> std::string;
+  static auto ConvertConfigurationToString(const pas::core::config::Configuration& config)
+      -> std::string;
 };
 
 // NOLINTNEXTLINE(cert-err58-cpp)
 BENCHMARK_F(TomlParserBenchmark, ParseConfiguration)(benchmark::State& state) {
-  const pas::config::Configuration expected_config{
-      {{"Device1", pas::config::DeviceConfiguration{"icon1"s}},
-       {"Device2", pas::config::DeviceConfiguration{"icon2"s}},
-       {"Device3", pas::config::DeviceConfiguration{"icon3"s}}}};
+  const pas::core::config::Configuration expected_config{
+      {{"Device1", pas::core::config::DeviceConfiguration{"icon1"s}},
+       {"Device2", pas::core::config::DeviceConfiguration{"icon2"s}},
+       {"Device3", pas::core::config::DeviceConfiguration{"icon3"s}}}};
 
   const std::string config = ConvertConfigurationToString(expected_config);
 
   for (auto current_state : state) {
-    auto result = pas::parser::TomlParser::ParseConfiguration(config);
+    auto result = pas::core::parser::TomlParser::ParseConfiguration(config);
     benchmark::DoNotOptimize(result);
   }
 }
@@ -36,13 +37,13 @@ BENCHMARK_F(TomlParserBenchmark, ParseEmptyConfiguration)(benchmark::State& stat
   const std::string emptyConfig;
 
   for (auto current_state : state) {
-    auto result = pas::parser::TomlParser::ParseConfiguration(emptyConfig);
+    auto result = pas::core::parser::TomlParser::ParseConfiguration(emptyConfig);
     benchmark::DoNotOptimize(result);
   }
 }
 
-auto TomlParserBenchmark::ConvertConfigurationToString(const pas::config::Configuration& config)
-    -> std::string {
+auto TomlParserBenchmark::ConvertConfigurationToString(
+    const pas::core::config::Configuration& config) -> std::string {
   std::stringstream raw_configuration_stream;
   for (const auto& [key, device] : config.devices) {
     raw_configuration_stream << "[[devices]]"s;
