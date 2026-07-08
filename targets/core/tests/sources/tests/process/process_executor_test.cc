@@ -16,7 +16,7 @@ using namespace std::string_literals;
 
 class ProcessExecutorTest : public ::testing::Test {
  protected:
-  utility::ProcessExecutor executor_;
+  pas::core::process::ProcessExecutor executor_;
   static constexpr std::chrono::milliseconds kExecuteTimeout{200};
 };
 

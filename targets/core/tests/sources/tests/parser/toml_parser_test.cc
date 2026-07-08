@@ -14,20 +14,21 @@ namespace {
 
 class TomlParserTest : public ::testing::Test {
  protected:
-  static auto ConvertConfigurationToString(const pas::config::Configuration& config) -> std::string;
+  static auto ConvertConfigurationToString(const pas::core::config::Configuration& config)
+      -> std::string;
 };
 
 }  // namespace
 
 TEST_F(TomlParserTest, ParseSuccess) {
-  const pas::config::Configuration expected_config{
-      {{"Device1", pas::config::DeviceConfiguration{"icon1"s}},
-       {"Device2", pas::config::DeviceConfiguration{"icon2"s}},
-       {"Device3", pas::config::DeviceConfiguration{"icon3"s}}}};
+  const pas::core::config::Configuration expected_config{
+      {{"Device1", pas::core::config::DeviceConfiguration{"icon1"s}},
+       {"Device2", pas::core::config::DeviceConfiguration{"icon2"s}},
+       {"Device3", pas::core::config::DeviceConfiguration{"icon3"s}}}};
 
   const std::string config = ConvertConfigurationToString(expected_config);
 
-  auto parsed_config = pas::parser::TomlParser::ParseConfiguration(config);
+  auto parsed_config = pas::core::parser::TomlParser::ParseConfiguration(config);
 
   ASSERT_EQ(expected_config.devices.size(), parsed_config.devices.size());
 
@@ -37,12 +38,12 @@ TEST_F(TomlParserTest, ParseSuccess) {
 }
 
 TEST_F(TomlParserTest, EmptyConfigurationParse) {
-  auto parsed_config = pas::parser::TomlParser::ParseConfiguration(""s);
+  auto parsed_config = pas::core::parser::TomlParser::ParseConfiguration(""s);
 
   ASSERT_TRUE(parsed_config.devices.empty());
 }
 
-auto TomlParserTest::ConvertConfigurationToString(const pas::config::Configuration& config)
+auto TomlParserTest::ConvertConfigurationToString(const pas::core::config::Configuration& config)
     -> std::string {
   std::stringstream raw_configuration_stream;
   for (const auto& [key, device] : config.devices) {

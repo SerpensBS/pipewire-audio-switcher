@@ -16,7 +16,7 @@ TEST(FileReaderTest, ReadSuccess) {
   auto file = pas::tests::utility::TempFile("ReadSuccess",
                                             {kExpectedContent.data(), kExpectedContent.size()});
 
-  auto readed_content = pas::filesystem::FileReader::Read(file.GetFullPath());
+  auto readed_content = pas::core::filesystem::FileReader::Read(file.GetFullPath());
 
   EXPECT_EQ(kExpectedContent, readed_content);
 }
@@ -31,7 +31,7 @@ TEST(FileReaderTest, ReadNonExistFileFailure) {
 
     ASSERT_LE(wrong_attrmpt_count, 20);
   }
-  EXPECT_THROW(pas::filesystem::FileReader::Read(non_exist_file_name), std::runtime_error);
+  EXPECT_THROW(pas::core::filesystem::FileReader::Read(non_exist_file_name), std::runtime_error);
 };
 
 TEST(FileReaderTest, ReadPartialFile) {
@@ -42,14 +42,14 @@ TEST(FileReaderTest, ReadPartialFile) {
       pas::tests::utility::TempFile("ReadPartialSuccess", {kContent.data(), kContent.size()});
 
   auto readed_content =
-      pas::filesystem::FileReader::Read(file.GetFullPath(), kExpectedPartContent.size());
+      pas::core::filesystem::FileReader::Read(file.GetFullPath(), kExpectedPartContent.size());
 
   EXPECT_EQ(kExpectedPartContent, readed_content);
 }
 
 TEST(FileReaderTest, ReadEmptyFile) {
   auto file = pas::tests::utility::TempFile("EmptyFile", {});
-  auto content = pas::filesystem::FileReader::Read(file.GetFullPath());
+  auto content = pas::core::filesystem::FileReader::Read(file.GetFullPath());
 
   EXPECT_TRUE(content.empty());
 }
@@ -59,7 +59,7 @@ TEST(FileReaderTest, ReadMoreThanFileSize) {
   constexpr std::size_t kReadedBytesCount = kContent.size() * 2;
 
   auto file = pas::tests::utility::TempFile("SmallFile", {kContent.data(), kContent.size()});
-  auto result = pas::filesystem::FileReader::Read(file.GetFullPath(), kReadedBytesCount);
+  auto result = pas::core::filesystem::FileReader::Read(file.GetFullPath(), kReadedBytesCount);
 
   EXPECT_EQ(result, kContent);
 }
@@ -69,7 +69,7 @@ TEST(FileReaderTest, ReadZeroBytes) {
 
   auto file = pas::tests::utility::TempFile("ZeroRead", {kContent.data(), kContent.size()});
 
-  auto result = pas::filesystem::FileReader::Read(file.GetFullPath(), 0);
+  auto result = pas::core::filesystem::FileReader::Read(file.GetFullPath(), 0);
 
   EXPECT_TRUE(result.empty());
 }

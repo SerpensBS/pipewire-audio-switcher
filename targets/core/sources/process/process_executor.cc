@@ -22,7 +22,7 @@
 #include <utility>
 #include <vector>
 
-namespace utility {
+namespace pas::core::process {
 auto ProcessExecutor::Execute(const std::filesystem::path& command,
                               const std::vector<std::string>& args,
                               std::chrono::milliseconds timeout) const
@@ -70,4 +70,4 @@ auto ProcessExecutor::Execute(const std::filesystem::path& command,
 
   return output;
 }
-}  // namespace utility
+}  // namespace pas::core::process

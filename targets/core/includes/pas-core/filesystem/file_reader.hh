@@ -1,12 +1,12 @@
-#ifndef PAS_FILESYSTEM_FILEREADER_HH
-#define PAS_FILESYSTEM_FILEREADER_HH
+#ifndef PAS_CORE_FILESYSTEM_FILEREADER_HH
+#define PAS_CORE_FILESYSTEM_FILEREADER_HH
 
 #include <cstddef>
 #include <filesystem>
 #include <limits>
 #include <string>
 
-namespace pas::filesystem {
+namespace pas::core::filesystem {
 
 class FileReader {
  public:
@@ -25,6 +25,6 @@ class FileReader {
       -> std::string;
 };
 
-}  // namespace pas::filesystem
+}  // namespace pas::core::filesystem
 
 #endif  // PAS_FILESYSTEM_FILEREADER_HH

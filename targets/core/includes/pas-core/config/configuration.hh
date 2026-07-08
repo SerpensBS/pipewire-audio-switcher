@@ -1,17 +1,17 @@
-#ifndef PAS_CONFIG_CONFIGURATION_HH
-#define PAS_CONFIG_CONFIGURATION_HH
+#ifndef PAS_CORE_CONFIG_CONFIGURATION_HH
+#define PAS_CORE_CONFIG_CONFIGURATION_HH
 
 #include <map>
 #include <string>
 
 #include "device_config.hh"
 
-namespace pas::config {
+namespace pas::core::config {
 
 struct Configuration {
   std::map<std::string, DeviceConfiguration> devices;
 };
 
-}  // namespace pas::config
+}  // namespace pas::core::config
 
 #endif

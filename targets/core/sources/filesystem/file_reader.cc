@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace pas::filesystem {
+namespace pas::core::filesystem {
 
 auto FileReader::Read(const std::filesystem::path& file_path, std::size_t max_readed_bytes_count)
     -> std::string {
@@ -25,4 +25,4 @@ auto FileReader::Read(const std::filesystem::path& file_path, std::size_t max_re
 
   return result;
 }
-}  // namespace pas::filesystem
+}  // namespace pas::core::filesystem

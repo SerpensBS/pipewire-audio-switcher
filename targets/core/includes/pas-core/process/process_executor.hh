@@ -1,5 +1,5 @@
-#ifndef PAS_PROCESS_PROCESS_EXECUTOR_HH
-#define PAS_PROCESS_PROCESS_EXECUTOR_HH
+#ifndef PAS_CORE_PROCESS_PROCESSEXECUTOR_HH
+#define PAS_CORE_PROCESS_PROCESSEXECUTOR_HH
 
 #include <chrono>
 #include <expected>
@@ -8,7 +8,7 @@
 #include <system_error>
 #include <vector>
 
-namespace utility {
+namespace pas::core::process {
 
 class ProcessExecutor {
  public:
@@ -34,5 +34,5 @@ class ProcessExecutor {
                std::chrono::milliseconds timeout) const -> std::expected<std::string, Error>;
 };
 
-}  // namespace utility
+}  // namespace pas::core::process
 #endif

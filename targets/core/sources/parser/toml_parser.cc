@@ -7,7 +7,7 @@
 
 #include "config/configuration.hh"
 
-namespace pas::parser {
+namespace pas::core::parser {
 
 auto TomlParser::ParseConfiguration(std::string_view configuration) -> config::Configuration {
   config::Configuration result;
@@ -36,4 +36,4 @@ auto TomlParser::ParseConfiguration(std::string_view configuration) -> config::C
   return result;
 }
 
-}  // namespace pas::parser
+}  // namespace pas::core::parser
