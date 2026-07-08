@@ -58,6 +58,8 @@ parse_args "$@"
 
 # Собираем проект.
 ./scripts/build.sh --preset=${PRESET_NAME} --target=pas-core-benchmark
+./scripts/build.sh --preset=${PRESET_NAME} --target=pas-cli-benchmark
 
 # Запускаем бенчмарк.
 ./build/${PRESET_NAME}/targets/core/benchmarks/pas-core-benchmark --benchmark_color=true
+./build/${PRESET_NAME}/targets/cli/benchmarks/pas-cli-benchmark --benchmark_color=true
