@@ -5,7 +5,13 @@
 
 namespace pas::core::config {
 
+/**
+ * @class DeviceConfiguration
+ * @brief Конфигурация устройства.
+ *
+ */
 struct DeviceConfiguration {
+  // Иконка
   std::string icon;
 };
 

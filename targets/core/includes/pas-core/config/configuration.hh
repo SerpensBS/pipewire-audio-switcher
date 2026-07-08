@@ -8,7 +8,13 @@
 
 namespace pas::core::config {
 
+/**
+ * @class Configuration
+ * @brief Конфигурация.
+ *
+ */
 struct Configuration {
+  // Список конфигураций устройств
   std::map<std::string, DeviceConfiguration> devices;
 };
 
