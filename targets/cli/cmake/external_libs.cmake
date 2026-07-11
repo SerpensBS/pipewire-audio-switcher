@@ -10,3 +10,7 @@ fetchcontent_declare(
 )
 
 fetchcontent_makeavailable(cli11_proj)
+
+# Boost
+find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)

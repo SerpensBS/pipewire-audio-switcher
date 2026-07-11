@@ -17,13 +17,19 @@ set_target_properties(${TARGET_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 target_include_directories(${TARGET_NAME} PUBLIC ${SOURCES_DIR})
 
 # Подключаем внешние библиотеки.
+include(${PROJECT_SOURCE_DIR}/cmake/external_libs.cmake)
+target_link_libraries(${TARGET_NAME} PUBLIC Boost::program_options)
+
+# Подключаем библиотеки проекта.
 target_link_libraries(${TARGET_NAME} PUBLIC pas::core)
-target_link_libraries(${TARGET_NAME} PRIVATE CLI11::CLI11)
 
 # Создаем исполняемый файл.
 add_executable(${PROJECT_NAME} ${SOURCES_DIR}/main.cc)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SOURCES_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE pas::cli)
+target_link_libraries(${PROJECT_NAME} PUBLIC pas::cli)
+
+# Настройки сборки проекта.
+target_link_libraries(${PROJECT_NAME} PRIVATE pas::project::properties)
 
 set_target_properties(
     ${PROJECT_NAME}

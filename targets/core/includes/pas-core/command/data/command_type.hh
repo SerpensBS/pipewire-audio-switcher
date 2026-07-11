@@ -8,7 +8,7 @@ namespace pas::core::command {
 /**
  * @brief Тип команды.
  */
-enum class CommandType : uint8_t { GetSink };
+enum class CommandType : uint8_t { Undefined = 0, GetSink };
 
 }  // namespace pas::core::command
 
