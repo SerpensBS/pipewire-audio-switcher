@@ -14,8 +14,6 @@ class IOption {
   [[nodiscard]]
   virtual auto GetName() const -> std::string_view = 0;
 
-  virtual void Register(boost::program_options::options_description& description) = 0;
-
   virtual void ParseArgument(const boost::program_options::variable_value& value,
                              InputParameters& out_parameters) = 0;
 

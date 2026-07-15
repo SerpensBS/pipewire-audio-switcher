@@ -9,7 +9,7 @@
 
 namespace pas::cli::options {
 
-class HelpOption final : public BaseOption {
+class HelpOption final : public BaseOption<void> {
  public:
   HelpOption();
 

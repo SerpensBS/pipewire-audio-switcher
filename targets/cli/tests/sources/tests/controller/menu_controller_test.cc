@@ -4,7 +4,6 @@
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
-#include <format>
 #include <functional>
 #include <sstream>
 #include <string>
@@ -16,29 +15,24 @@
 #include "options/data/input_parameters.hh"
 
 namespace {
-class MenuControllerTest : public ::testing::Test {};
+class MenuControllerTest : public ::testing::Test {
+ protected:
+  constexpr static std::string_view kAppName{"InitializeTest"};
+  pas::cli::controller::MenuController menu_controller{std::string(kAppName)};
+};
 
-class MockOption final : public pas::cli::options::BaseOption {
+template <typename ValueT>
+class MockOption final : public pas::cli::options::BaseOption<ValueT> {
  public:
-  using RegisterFunction = std::function<void(boost::program_options::options_description&)>;
   using ParseArgumentFunction = std::function<void(const boost::program_options::variable_value&,
                                                    pas::cli::options::InputParameters&)>;
-  struct CommandWritingStyle {
-    std::string long_command;
-    char short_command;
-    std::string description;
-  };
 
-  MockOption(CommandWritingStyle command, RegisterFunction reg, ParseArgumentFunction parse)
-      : pas::cli::options::BaseOption(
-            std::move(command.long_command), command.short_command, std::move(command.description)),
-        register_(std::move(reg)),
+  MockOption(std::string name,
+             char short_command,
+             std::string description,
+             ParseArgumentFunction parse)
+      : pas::cli::options::BaseOption<void>(std::move(name), short_command, std::move(description)),
         parse_arg_(std::move(parse)) {}
-
-  void Register(boost::program_options::options_description& description) override {
-    description.add_options()(std::format("{},{}", GetName(), GetShortCommand()).c_str(), "");
-    register_(description);
-  }
 
   void ParseArgument(const boost::program_options::variable_value& value,
                      pas::cli::options::InputParameters& out_parameters) override {
@@ -46,33 +40,25 @@ class MockOption final : public pas::cli::options::BaseOption {
   }
 
  private:
-  RegisterFunction register_;
   ParseArgumentFunction parse_arg_;
 };
 }  // namespace
 
 TEST_F(MenuControllerTest, Initialize) {
-  constexpr std::string_view kAppName{"InitializeTest"};
-  pas::cli::controller::MenuController menu_controller{std::string(kAppName)};
+  pas::cli::controller::MenuController tested_controller{std::string(kAppName)};
 
   std::ostringstream oss;
-  menu_controller.ShowHelp(oss);
+  tested_controller.ShowHelp(oss);
 
   EXPECT_TRUE(oss.str().contains(kAppName));
 }
 
-TEST_F(MenuControllerTest, RegisterTest) {
-  constexpr std::string_view kAppName{"RegisterTest"};
-  pas::cli::controller::MenuController menu_controller{std::string(kAppName)};
-  bool option_registered = false;
-
-  MockOption option(
-      {.long_command = "mock", .short_command = 'm', .description = "description"},
-      [&option_registered](boost::program_options::options_description&) -> void {
-        option_registered = true;
-      },
-      [](const boost::program_options::variable_value&,
-         pas::cli::options::InputParameters&) -> void {});
+TEST_F(MenuControllerTest, Register) {
+  MockOption<void> option("mock",
+                          'm',
+                          "description",
+                          [](const boost::program_options::variable_value&,
+                             pas::cli::options::InputParameters&) -> void {});
 
   ASSERT_NO_THROW(menu_controller.RegisterCommand(option));
 
@@ -81,26 +67,30 @@ TEST_F(MenuControllerTest, RegisterTest) {
   ASSERT_TRUE(stream.str().contains("mock"));
 }
 
-TEST_F(MenuControllerTest, RunTest) {
-  constexpr std::string_view kAppName{"RunTest"};
-  constexpr int kExpectedValue = 4;
-  pas::cli::controller::MenuController menu_controller{std::string(kAppName)};
+TEST_F(MenuControllerTest, CallVoidOption) {
   bool option_called = false;
 
-  MockOption option(
-      {.long_command = "mock", .short_command = 'm', .description = "description"},
-      [](boost::program_options::options_description&) -> void {},
-      [&option_called, kExpectedValue](const boost::program_options::variable_value& value,
-                                       pas::cli::options::InputParameters&) -> void {
-        // ASSERT_EQ(kExpectedValue, value.as<int>());
-        option_called = true;
-      });
+  MockOption<void> option(
+      "mock",
+      'm',
+      "description",
+      [&option_called](const boost::program_options::variable_value&,
+                       pas::cli::options::InputParameters&) -> void { option_called = true; });
 
   menu_controller.RegisterCommand(option);
   ASSERT_FALSE(option_called);
 
-  std::vector<const char*> argv = {kAppName.data(), "--mock"};
+  auto call_option = [](const pas::cli::controller::MenuController& menu_controller,
+                        const std::string& command) -> void {
+    std::vector<const char*> argv = {kAppName.data(), command.c_str()};
+    menu_controller.ProcessArguments(static_cast<int>(argv.size()), argv.data());
+  };
 
-  menu_controller.ProcessArguments(static_cast<int>(argv.size()), argv.data());
+  call_option(menu_controller, "--mock");
+  ASSERT_TRUE(option_called);
+
+  option_called = false;
+
+  call_option(menu_controller, "-m");
   ASSERT_TRUE(option_called);
 }

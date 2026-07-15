@@ -16,11 +16,6 @@ namespace pas::cli::controller {
 MenuController::MenuController(const std::string& app_description)
     : description_(app_description) {}
 
-void MenuController::RegisterCommand(options::IOption& option) {
-  option.Register(description_);
-  commands_.emplace(option.GetName(), option);
-}
-
 auto MenuController::ProcessArguments(int argc, const char* const* argv) const
     -> options::InputParameters {
   boost::program_options::variables_map variables_map;

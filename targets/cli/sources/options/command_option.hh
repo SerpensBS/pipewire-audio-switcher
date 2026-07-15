@@ -10,7 +10,7 @@
 
 namespace pas::cli::options {
 
-class CommandOption final : public BaseOptionWithParameter<std::string> {
+class CommandOption final : public BaseOption<std::string> {
  public:
   CommandOption();
 
