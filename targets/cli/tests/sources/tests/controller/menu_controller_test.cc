@@ -26,17 +26,17 @@ class MockOption final : public pas::cli::options::BaseOption {
   struct CommandWritingStyle {
     std::string long_command;
     char short_command;
-    std::string_view description;
+    std::string description;
   };
 
   MockOption(CommandWritingStyle command, RegisterFunction reg, ParseArgumentFunction parse)
-      : pas::cli::options::BaseOption(std::move(command.long_command), command.short_command),
+      : pas::cli::options::BaseOption(
+            std::move(command.long_command), command.short_command, std::move(command.description)),
         register_(std::move(reg)),
         parse_arg_(std::move(parse)) {}
 
   void Register(boost::program_options::options_description& description) override {
-    description.add_options()(std::format("{},{}", GetFullCommand(), GetShortCommand()).c_str(),
-                              "");
+    description.add_options()(std::format("{},{}", GetName(), GetShortCommand()).c_str(), "");
     register_(description);
   }
 
@@ -92,6 +92,7 @@ TEST_F(MenuControllerTest, RunTest) {
       [](boost::program_options::options_description&) -> void {},
       [&option_called, kExpectedValue](const boost::program_options::variable_value& value,
                                        pas::cli::options::InputParameters&) -> void {
+        // ASSERT_EQ(kExpectedValue, value.as<int>());
         option_called = true;
       });
 

@@ -14,13 +14,8 @@
 
 namespace pas::cli::options {
 
-CommandOption::CommandOption() : BaseOption("command", 'c') {}
-
-void CommandOption::Register(boost::program_options::options_description& description) {
-  description.add_options()(std::format("{},{}", GetFullCommand(), GetShortCommand()).c_str(),
-                            boost::program_options::value<std::string>(),
-                            "Command to be executed by the application");
-};
+CommandOption::CommandOption()
+    : BaseOptionWithParameter("command", 'c', "Command to be executed by the application") {}
 
 void CommandOption::ParseArgument(const boost::program_options::variable_value& value,
                                   InputParameters& out_parameters) {

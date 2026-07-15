@@ -13,13 +13,8 @@ class HelpOption final : public BaseOption {
  public:
   HelpOption();
 
-  void Register(boost::program_options::options_description& description) override;
-
   void ParseArgument(const boost::program_options::variable_value& value,
                      InputParameters& out_parameters) override;
-
- private:
-  boost::program_options::options_description* description_;
 };
 
 }  // namespace pas::cli::options

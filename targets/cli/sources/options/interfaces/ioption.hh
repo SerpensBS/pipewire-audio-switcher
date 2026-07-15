@@ -12,10 +12,7 @@ namespace pas::cli::options {
 class IOption {
  public:
   [[nodiscard]]
-  virtual auto GetFullCommand() const -> std::string_view = 0;
-
-  [[nodiscard]]
-  virtual auto GetShortCommand() const -> char = 0;
+  virtual auto GetName() const -> std::string_view = 0;
 
   virtual void Register(boost::program_options::options_description& description) = 0;
 

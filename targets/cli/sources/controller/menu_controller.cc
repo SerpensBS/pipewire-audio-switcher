@@ -18,7 +18,7 @@ MenuController::MenuController(const std::string& app_description)
 
 void MenuController::RegisterCommand(options::IOption& option) {
   option.Register(description_);
-  commands_.emplace(option.GetFullCommand(), option);
+  commands_.emplace(option.GetName(), option);
 }
 
 auto MenuController::ProcessArguments(int argc, const char* const* argv) const

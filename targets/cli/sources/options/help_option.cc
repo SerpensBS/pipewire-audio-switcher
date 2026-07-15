@@ -10,13 +10,7 @@
 
 namespace pas::cli::options {
 
-HelpOption::HelpOption() : BaseOption("help", 'h'), description_(nullptr) {}
-
-void HelpOption::Register(boost::program_options::options_description& description) {
-  description.add_options()(std::format("{},{}", GetFullCommand(), GetShortCommand()).c_str(),
-                            "Help screen");
-  description_ = &description;
-};
+HelpOption::HelpOption() : BaseOption("help", 'h', "Help Screen") {}
 
 void HelpOption::ParseArgument(const boost::program_options::variable_value& value,
                                InputParameters& out_parameters) {
