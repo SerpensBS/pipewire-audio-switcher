@@ -58,6 +58,8 @@ parse_args "$@"
 
 # Собираем проект.
 ./scripts/build.sh --preset=${PRESET_NAME} --target=pas-core-tests
+./scripts/build.sh --preset=${PRESET_NAME} --target=pas-cli-tests
 
 # Запускаем тесты.
 ./build/${PRESET_NAME}/targets/core/tests/pas-core-tests --gtest_color=yes
+./build/${PRESET_NAME}/targets/cli/tests/pas-cli-tests --gtest_color=yes

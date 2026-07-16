@@ -8,7 +8,7 @@
       "use_terminal": true,
       "close_on_exit": false,
       "args": [
-        "--target=pipewire-audio-switcher",
+        "--target=pas-cli",
         "--preset=${input:buildType}"
       ],
       "group": "build",

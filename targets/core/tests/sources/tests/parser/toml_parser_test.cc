@@ -22,9 +22,9 @@ class TomlParserTest : public ::testing::Test {
 
 TEST_F(TomlParserTest, ParseSuccess) {
   const pas::core::config::Configuration expected_config{
-      {{"Device1", pas::core::config::DeviceConfiguration{"icon1"s}},
-       {"Device2", pas::core::config::DeviceConfiguration{"icon2"s}},
-       {"Device3", pas::core::config::DeviceConfiguration{"icon3"s}}}};
+      {{"Device1", pas::core::config::DeviceConfiguration{""}},
+       {"Device2", pas::core::config::DeviceConfiguration{""}},
+       {"Device3", pas::core::config::DeviceConfiguration{""}}}};
 
   const std::string config = ConvertConfigurationToString(expected_config);
 
