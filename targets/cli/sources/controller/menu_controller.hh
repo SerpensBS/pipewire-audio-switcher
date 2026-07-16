@@ -13,19 +13,48 @@
 
 namespace pas::cli::controller {
 
+/**
+ * @class MenuController
+ * @brief Контроллер консольного меню.
+ *
+ */
 class MenuController {
  public:
+  /**
+   * @param app_description Описание приложения.
+   */
   explicit MenuController(const std::string& app_description);
 
-  template <typename T>
-  void RegisterCommand(options::BaseOption<T>& option);
+  /**
+   * @brief Регистрация команды.
+   *
+   * @tparam T Тип данных значения опции
+   * @param option Опция
+   */
+  template <typename ValueT>
+  void RegisterCommand(options::BaseOption<ValueT>& option);
 
+  /**
+   * @brief Обработка аргументов командной строки.
+   *
+   * @param argc Количество аргументов
+   * @param argv Аргументы.
+   *
+   * @return Параметры аргументов
+   */
   auto ProcessArguments(int argc, const char* const* argv) const -> options::InputParameters;
 
+  /**
+   * @brief Меню помощи.
+   *
+   * @param stream Поток, в который будет выведена справочная информация
+   */
   void ShowHelp(std::ostream& stream) const;
 
  private:
+  // Опции
   boost::program_options::options_description description_;
+  // Словарь опций.
   std::map<std::string, options::IOption&> commands_;
 };
 

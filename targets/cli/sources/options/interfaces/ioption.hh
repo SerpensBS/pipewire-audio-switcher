@@ -11,9 +11,18 @@ namespace pas::cli::options {
 
 class IOption {
  public:
+  /**
+   * @brief Возвращает имя приложения.
+   */
   [[nodiscard]]
   virtual auto GetName() const -> std::string_view = 0;
 
+  /**
+   * @brief Парсит аргумент командной строки.
+   *
+   * @param value Значение из командной строки.
+   * @param out_parameters Структура, в которую будет записан результат парсинга
+   */
   virtual void ParseArgument(const boost::program_options::variable_value& value,
                              InputParameters& out_parameters) = 0;
 

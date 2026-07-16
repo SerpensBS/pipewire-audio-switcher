@@ -9,6 +9,11 @@
 
 namespace pas::cli::options {
 
+/**
+ * @class HelpOption
+ * @brief Парсит команду на получение справочной информации.
+ *
+ */
 class HelpOption final : public BaseOption<void> {
  public:
   HelpOption();

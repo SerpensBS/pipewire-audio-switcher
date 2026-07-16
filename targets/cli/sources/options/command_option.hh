@@ -10,6 +10,11 @@
 
 namespace pas::cli::options {
 
+/**
+ * @class CommandOption
+ * @brief Опция парсит команду, передаваемую на исполнение приложению.
+ *
+ */
 class CommandOption final : public BaseOption<std::string> {
  public:
   CommandOption();

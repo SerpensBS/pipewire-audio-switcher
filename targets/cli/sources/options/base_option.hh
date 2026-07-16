@@ -11,24 +11,49 @@
 #include "options/interfaces/ioption.hh"
 
 namespace pas::cli::options {
-template <typename T>
+/**
+ * @brief Реализация базовых функций для интерфейса Опции.
+ *
+ * @tparam ValueT Тип данных значения опции
+ */
+template <typename ValueT>
 class BaseOption : public IOption {
  public:
+  /**
+   * @param long_command Полное имя опции
+   * @param short_command Короткое имя опции
+   * @param description Описание опции, выводимое в справке
+   */
   explicit BaseOption(std::string&& long_command, char short_command, std::string&& description)
       : name_(std::move(long_command)),
         description_(std::move(description)),
         short_command_(short_command) {};
 
+  /**
+   * @brief Получить имя опции.
+   *
+   * @return Имя опции
+   */
   [[nodiscard]]
   auto GetName() const -> std::string_view override {
     return name_;
   }
 
+  /**
+   * @brief Получить короткое имя опции.
+   *
+   * @return Короткое имя опции
+   */
   [[nodiscard]]
   auto GetShortCommand() const -> char {
     return short_command_;
   }
 
+  /**
+   * @brief Получить описание опции.
+   *
+   * @return Описание опции
+   */
   [[nodiscard]]
   auto GetDescription() const -> std::string {
     return description_;
@@ -44,8 +69,11 @@ class BaseOption : public IOption {
   BaseOption(BaseOption&&) = default;
 
  private:
+  // Имя опции
   std::string name_;
+  // Описание опции
   std::string description_;
+  // Короткое имя опции
   char short_command_;
 };
 }  // namespace pas::cli::options
