@@ -3,6 +3,7 @@ if(NOT DEFINED SOURCES_DIR)
 endif()
 
 set(SOURCES
+    ${SOURCES_DIR}/benchmarks/adapter/wpctl_adapter_benchmark.cc
     ${SOURCES_DIR}/benchmarks/filesystem/file_reader_benchmark.cc
     ${SOURCES_DIR}/benchmarks/parsers/toml_parser_benchmark.cc
     ${SOURCES_DIR}/benchmarks/process/process_executor_benchmark.cc

@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-#include "device_config.hh"
+#include "device.hh"
 
 namespace pas::core::config {
 
@@ -15,7 +15,7 @@ namespace pas::core::config {
  */
 struct Configuration {
   // Список конфигураций устройств
-  std::map<std::string, DeviceConfiguration> devices;
+  std::map<std::string, Device> devices;
 };
 
 }  // namespace pas::core::config

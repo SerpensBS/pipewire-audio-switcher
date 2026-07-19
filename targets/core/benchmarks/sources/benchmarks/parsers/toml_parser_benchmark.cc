@@ -4,7 +4,7 @@
 #include <string>
 
 #include "pas-core/config/configuration.hh"
-#include "pas-core/config/device_config.hh"
+#include "pas-core/config/device.hh"
 #include "pas-core/parser/toml_parser.hh"
 
 namespace {
@@ -20,9 +20,9 @@ class TomlParserBenchmark : public benchmark::Fixture {
 // NOLINTNEXTLINE(cert-err58-cpp)
 BENCHMARK_F(TomlParserBenchmark, ParseConfiguration)(benchmark::State& state) {
   const pas::core::config::Configuration expected_config{
-      {{"Device1", pas::core::config::DeviceConfiguration{"icon1"s}},
-       {"Device2", pas::core::config::DeviceConfiguration{"icon2"s}},
-       {"Device3", pas::core::config::DeviceConfiguration{"icon3"s}}}};
+      {{"Device1", pas::core::config::Device{.name = "Device1", .icon = ""}},
+       {"Device2", pas::core::config::Device{.name = "Device2", .icon = ""}},
+       {"Device3", pas::core::config::Device{.name = "Device3", .icon = ""}}}};
 
   const std::string config = ConvertConfigurationToString(expected_config);
 

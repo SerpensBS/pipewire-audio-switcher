@@ -5,6 +5,7 @@ endif()
 set(SOURCES
     ${SOURCES_DIR}/tests/process/process_executor_test.cc
     ${SOURCES_DIR}/tests/filesystem/file_reader_test.cc
+    ${SOURCES_DIR}/tests/adapter/wpctl_adapter_test.cc
     ${SOURCES_DIR}/tests/parser/toml_parser_test.cc
     ${SOURCES_DIR}/utility/temp_file.cc
 )

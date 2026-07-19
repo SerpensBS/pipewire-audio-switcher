@@ -6,7 +6,7 @@
 #include <string>
 
 #include "pas-core/config/configuration.hh"
-#include "pas-core/config/device_config.hh"
+#include "pas-core/config/device.hh"
 
 using namespace std::string_literals;
 
@@ -22,9 +22,9 @@ class TomlParserTest : public ::testing::Test {
 
 TEST_F(TomlParserTest, ParseSuccess) {
   const pas::core::config::Configuration expected_config{
-      {{"Device1", pas::core::config::DeviceConfiguration{""}},
-       {"Device2", pas::core::config::DeviceConfiguration{""}},
-       {"Device3", pas::core::config::DeviceConfiguration{""}}}};
+      {{"Device1", pas::core::config::Device{.name = "Device1", .icon = ""}},
+       {"Device2", pas::core::config::Device{.name = "Device2", .icon = ""}},
+       {"Device3", pas::core::config::Device{.name = "Device3", .icon = ""}}}};
 
   const std::string config = ConvertConfigurationToString(expected_config);
 
@@ -33,6 +33,7 @@ TEST_F(TomlParserTest, ParseSuccess) {
   ASSERT_EQ(expected_config.devices.size(), parsed_config.devices.size());
 
   for (const auto& [key, device] : expected_config.devices) {
+    ASSERT_EQ(device.name, parsed_config.devices.at(key).name);
     ASSERT_EQ(device.icon, parsed_config.devices.at(key).icon);
   }
 }
