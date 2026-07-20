@@ -8,7 +8,7 @@ namespace pas::cli::options {
 /**
  * @brief Тип команды.
  */
-enum class CommandType : uint8_t { Undefined = 0, Help, GetSink };
+enum class CommandType : uint8_t { Undefined = 0, Help, GetSink, CycleSink };
 
 }  // namespace pas::cli::options
 

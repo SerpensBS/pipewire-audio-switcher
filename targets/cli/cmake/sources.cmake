@@ -6,4 +6,5 @@ set(SOURCES
     ${SOURCES_DIR}/controller/menu_controller.cc
     ${SOURCES_DIR}/options/help_option.cc
     ${SOURCES_DIR}/options/command_option.cc
+    ${SOURCES_DIR}/commands/cycle_sink_command.cc
 )

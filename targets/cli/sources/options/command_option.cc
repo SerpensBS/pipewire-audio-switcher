@@ -23,7 +23,7 @@ void CommandOption::ParseArgument(const boost::program_options::variable_value& 
   }
 
   static const std::map<const std::string_view, CommandType> command_type_map{
-      {"get-sink", CommandType::GetSink}};
+      {"cycle-sink", CommandType::CycleSink}, {"get-sink", CommandType::GetSink}};
 
   out_parameters.command_type = command_type_map.at(value.as<const std::string&>());
 }

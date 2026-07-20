@@ -3,9 +3,11 @@
 #include <gtest/gtest.h>
 
 #include <array>
+#include <format>
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <vector>
 
 #include "controller/menu_controller.hh"
@@ -48,7 +50,7 @@ TEST_F(CommandOptionTest, HelpCommandNotChanged) {
   menu_controller_.RegisterCommand(help_option);
 
   {
-    const auto args = std::to_array<const char*>({"", "--help", "--command=get-sink"});
+    const auto args = std::to_array<const char*>({kAppName.data(), "--help", "--command=get-sink"});
 
     auto parsed_args =
         menu_controller_.ProcessArguments(static_cast<int>(args.size()), args.data());
@@ -56,11 +58,29 @@ TEST_F(CommandOptionTest, HelpCommandNotChanged) {
   }
 
   {
-    const auto args = std::to_array<const char*>({"", "--command=get-sink", "--help"});
+    const auto args = std::to_array<const char*>({kAppName.data(), "--command=get-sink", "--help"});
 
     auto parsed_args =
         menu_controller_.ProcessArguments(static_cast<int>(args.size()), args.data());
     EXPECT_EQ(pas::cli::options::CommandType::Help, parsed_args.command_type);
+  }
+}
+
+TEST_F(CommandOptionTest, ParseCommand) {
+  menu_controller_.RegisterCommand(command_option_);
+
+  std::unordered_map<std::string, pas::cli::options::CommandType> command_types_map{
+      {"cycle-sink", pas::cli::options::CommandType::CycleSink},
+      {"get-sink", pas::cli::options::CommandType::GetSink}};
+
+  for (const auto& [key, value] : command_types_map) {
+    {
+      const auto args = std::to_array<const char*>({kAppName.data(), "--command", key.data()});
+
+      auto parsed_args =
+          menu_controller_.ProcessArguments(static_cast<int>(args.size()), args.data());
+      EXPECT_EQ(value, parsed_args.command_type);
+    }
   }
 }
 
@@ -72,7 +92,7 @@ class CommandOptionParseTest : public CommandOptionTest,
 };
 }  // namespace
 
-TEST_P(CommandOptionParseTest, Parse) {
+TEST_P(CommandOptionParseTest, ParseDifferentVariants) {
   menu_controller_.RegisterCommand(command_option_);
 
   const ParamType& argv = GetParam();
