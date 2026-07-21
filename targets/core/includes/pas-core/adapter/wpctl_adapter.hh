@@ -20,6 +20,7 @@ namespace pas::core::adapter {
  */
 class WpctlApapter : public IWpctlApapter {
  public:
+  WpctlApapter();
   /**
    * @param process_executor Объект для работы с внешними процессами
    */

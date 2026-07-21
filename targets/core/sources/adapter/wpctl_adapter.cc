@@ -12,6 +12,7 @@
 
 #include "adapter/data/sink.hh"
 #include "process/interfaces/iprocess_executor.hh"
+#include "process/process_executor.hh"
 #include "utility/error.hh"
 
 namespace {
@@ -64,6 +65,9 @@ auto GetSinks(const std::regex& regex,
 }
 }  // namespace
 namespace pas::core::adapter {
+
+WpctlApapter::WpctlApapter()
+    : process_executor_(std::make_shared<pas::core::process::ProcessExecutor>()) {}
 
 WpctlApapter::WpctlApapter(std::shared_ptr<pas::core::process::IProcessExecutor> process_executor)
     : process_executor_(std::move(process_executor)) {}

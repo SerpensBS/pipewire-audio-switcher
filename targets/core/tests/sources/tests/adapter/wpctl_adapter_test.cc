@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <chrono>
 #include <cstddef>
-#include <memory>
 #include <optional>
 #include <system_error>
 
@@ -25,8 +24,7 @@ class WpctlAdapterTest : public ::testing::Test {
   }
 
  protected:
-  pas::core::adapter::WpctlApapter adapter_{
-      std::make_shared<pas::core::process::ProcessExecutor>()};
+  pas::core::adapter::WpctlApapter adapter_;
   constexpr static std::chrono::milliseconds kTimeout{1'000};
 };
 }  // namespace

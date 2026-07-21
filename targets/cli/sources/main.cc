@@ -1,7 +1,6 @@
 #include <chrono>
 #include <cstdlib>
 #include <iostream>
-#include <memory>
 #include <system_error>
 
 #include "commands/cycle_sink_command.hh"
@@ -11,7 +10,6 @@
 #include "options/data/command_type.hh"
 #include "options/help_option.hh"
 #include "pas-core/adapter/wpctl_adapter.hh"
-#include "pas-core/process/process_executor.hh"
 
 constexpr std::chrono::milliseconds kTimeout{1000};
 
@@ -30,16 +28,14 @@ auto main(int argc, char** argv) -> int {
       menu.ShowHelp(std::cout);
       break;
     case pas::cli::options::CommandType::GetSink: {
-      pas::core::adapter::WpctlApapter adapter(
-          std::make_shared<pas::core::process::ProcessExecutor>());
+      pas::core::adapter::WpctlApapter adapter;
 
       pas::cli::commands::GetSinkCommand::Execute(
           adapter, {.result_stream = std::cout, .error_stream = std::cerr}, kTimeout);
       break;
     }
     case pas::cli::options::CommandType::CycleSink: {
-      pas::core::adapter::WpctlApapter adapter(
-          std::make_shared<pas::core::process::ProcessExecutor>());
+      pas::core::adapter::WpctlApapter adapter;
 
       pas::cli::commands::CycleSinkCommand::Execute(adapter, std::cerr, kTimeout);
       break;

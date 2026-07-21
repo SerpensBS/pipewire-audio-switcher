@@ -1,7 +1,6 @@
 #include <benchmark/benchmark.h>
 
 #include <chrono>
-#include <memory>
 #include <mutex>
 #include <optional>
 
@@ -13,8 +12,7 @@ class WpctlAdapterBenchmark : public benchmark::Fixture {
  protected:
   constexpr static std::chrono::milliseconds kTimeout{1000};
 
-  const pas::core::adapter::WpctlApapter adapter_{
-      std::make_shared<pas::core::process::ProcessExecutor>()};
+  const pas::core::adapter::WpctlApapter adapter_;
 
   static auto CheckWpctlInstall(benchmark::State& state) {
     std::lock_guard<std::mutex> lock(mutex_);
