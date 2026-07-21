@@ -14,7 +14,10 @@
 namespace pas::cli::options {
 
 CommandOption::CommandOption()
-    : BaseOption("command", 'c', "Command to be executed by the application") {}
+    : BaseOption(
+          "command",
+          'c',
+          "Command to be executed by the application. Possible values: 'get-sink', 'cycle-sink'") {}
 
 void CommandOption::ParseArgument(const boost::program_options::variable_value& value,
                                   InputParameters& out_parameters) {
