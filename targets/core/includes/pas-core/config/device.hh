@@ -10,7 +10,9 @@ namespace pas::core::config {
  * @brief Конфигурация устройства.
  *
  */
-struct DeviceConfiguration {
+struct Device {
+  // Имя
+  std::string name;
   // Иконка
   std::string icon;
 };

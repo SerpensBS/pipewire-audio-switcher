@@ -30,7 +30,8 @@ auto TomlParser::ParseConfiguration(std::string_view configuration) -> config::C
 
     result.devices.emplace(std::piecewise_construct,
                            std::forward_as_tuple(device->get("name")->value_or("")),
-                           std::forward_as_tuple(device->get("icon")->value_or("")));
+                           std::forward_as_tuple(device->get("name")->value_or(""),
+                                                 device->get("icon")->value_or("")));
   };
 
   return result;

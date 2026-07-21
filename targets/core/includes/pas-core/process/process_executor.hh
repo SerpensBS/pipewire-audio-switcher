@@ -5,20 +5,15 @@
 #include <expected>
 #include <filesystem>
 #include <string>
-#include <system_error>
 #include <vector>
+
+#include "pas-core/process/interfaces/iprocess_executor.hh"
+#include "pas-core/utility/error.hh"
 
 namespace pas::core::process {
 
-class ProcessExecutor {
+class ProcessExecutor : public IProcessExecutor {
  public:
-  struct Error {
-    // Код ошибки
-    std::error_code code;
-    // Сообщение
-    std::string message;
-  };
-
   /**
    * @brief Запускает процесс и возвращает его вывод.
    *
@@ -31,7 +26,8 @@ class ProcessExecutor {
   [[nodiscard]]
   auto Execute(const std::filesystem::path& command,
                const std::vector<std::string>& args,
-               std::chrono::milliseconds timeout) const -> std::expected<std::string, Error>;
+               std::chrono::milliseconds timeout) const
+      -> std::expected<std::string, utility::Error> override;
 };
 
 }  // namespace pas::core::process

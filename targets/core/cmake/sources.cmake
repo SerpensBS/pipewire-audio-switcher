@@ -4,6 +4,7 @@ endif()
 
 set(SOURCES
     ${SOURCES_DIR}/process/process_executor.cc
+    ${SOURCES_DIR}/adapter/wpctl_adapter.cc
     ${SOURCES_DIR}/filesystem/file_reader.cc
     ${SOURCES_DIR}/parser/toml_parser.cc
 )
