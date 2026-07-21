@@ -8,17 +8,17 @@
 #include <vector>
 
 #include "pas-core/adapter/data/sink.hh"
+#include "pas-core/adapter/interfaces/iwpctl_adapter.hh"
 #include "pas-core/process/interfaces/iprocess_executor.hh"
 #include "pas-core/utility/error.hh"
 
 namespace pas::core::adapter {
-
 /**
  * @class WpctlApapter
  * @brief Адаптер для работы с утилитой wpctl,
  *
  */
-class WpctlApapter {
+class WpctlApapter : public IWpctlApapter {
  public:
   /**
    * @param process_executor Объект для работы с внешними процессами
@@ -32,7 +32,7 @@ class WpctlApapter {
    */
   [[nodiscard]]
   auto GetSinks(std::chrono::milliseconds timeout) const
-      -> std::expected<std::vector<Sink>, utility::Error>;
+      -> std::expected<std::vector<Sink>, utility::Error> override;
 
   /**
    * @brief Установить активный sink.
@@ -42,16 +42,7 @@ class WpctlApapter {
    */
   [[nodiscard]]
   auto SetSink(std::size_t sink_id, std::chrono::milliseconds timeout) const
-      -> std::expected<void, utility::Error>;
-
-  /**
-   * @brief Получить активный sink
-   *
-   * @param timeout Таймаут операции
-   */
-  [[nodiscard]]
-  auto GetActiveSink(std::chrono::milliseconds timeout) const
-      -> std::expected<Sink, utility::Error>;
+      -> std::expected<void, utility::Error> override;
 
  private:
   // Объект для работы с внешними процессами

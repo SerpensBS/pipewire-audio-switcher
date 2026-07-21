@@ -1,6 +1,5 @@
 #include "pas-core/adapter/wpctl_adapter.hh"
 
-#include <algorithm>
 #include <chrono>
 #include <cstddef>
 #include <expected>
@@ -8,7 +7,6 @@
 #include <regex>
 #include <sstream>
 #include <string>
-#include <system_error>
 #include <utility>
 #include <vector>
 
@@ -88,25 +86,4 @@ auto WpctlApapter::SetSink(std::size_t sink_id, std::chrono::milliseconds timeou
 
   return {};
 }
-
-auto WpctlApapter::GetActiveSink(std::chrono::milliseconds timeout) const
-    -> std::expected<Sink, utility::Error> {
-  auto sinks_result = GetSinks(timeout);
-
-  if (not sinks_result.has_value()) {
-    return std::unexpected<utility::Error>(std::move(sinks_result.error()));
-  }
-
-  const auto& sinks = sinks_result.value();
-  auto sink_it =
-      std::ranges::find_if(sinks, [](const Sink& sink) -> bool { return sink.is_active; });
-
-  if (sinks.end() == sink_it) {
-    return std::unexpected<utility::Error>({.code = std::make_error_code(std::errc::invalid_seek),
-                                            .message = "Active sink not found"});
-  }
-
-  return *sink_it;
-}
-
 }  // namespace pas::core::adapter

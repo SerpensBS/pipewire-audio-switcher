@@ -4,6 +4,8 @@
 #include <chrono>
 #include <ostream>
 
+#include "pas-core/adapter/interfaces/iwpctl_adapter.hh"
+
 namespace pas::cli::commands {
 /**
  * @class CycleSinkCommand
@@ -18,7 +20,9 @@ class CycleSinkCommand {
    * @param error_stream Поток в который будут выводиться ошибки
    * @param timeout Таймаут операции
    */
-  static void Execute(std::ostream& error_stream, std::chrono::milliseconds timeout);
+  static void Execute(const pas::core::adapter::IWpctlApapter& adapter,
+                      std::ostream& error_stream,
+                      std::chrono::milliseconds timeout);
 };
 }  // namespace pas::cli::commands
 

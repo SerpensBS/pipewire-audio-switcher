@@ -4,12 +4,14 @@
 #include <memory>
 #include <mutex>
 #include <optional>
+#include <sstream>
 
+#include "commands/get_sink_command.hh"
 #include "pas-core/adapter/wpctl_adapter.hh"
 #include "pas-core/process/process_executor.hh"
 
 namespace {
-class WpctlAdapterBenchmark : public benchmark::Fixture {
+class GetSinkCommandBenchmark : public benchmark::Fixture {
  protected:
   constexpr static std::chrono::milliseconds kTimeout{1000};
 
@@ -34,16 +36,21 @@ class WpctlAdapterBenchmark : public benchmark::Fixture {
   static std::optional<bool> wpctl_installed_;
   static std::mutex mutex_;
 };
-std::mutex WpctlAdapterBenchmark::mutex_;
-std::optional<bool> WpctlAdapterBenchmark::wpctl_installed_;
+std::mutex GetSinkCommandBenchmark::mutex_;
+std::optional<bool> GetSinkCommandBenchmark::wpctl_installed_;
 
 // NOLINTNEXTLINE(cert-err58-cpp)
-BENCHMARK_F(WpctlAdapterBenchmark, GetSinks)(benchmark::State& state) {
+BENCHMARK_F(GetSinkCommandBenchmark, Execute)(benchmark::State& state) {
   CheckWpctlInstall(state);
 
+  std::stringstream error_stream;
+  std::stringstream result_stream;
+
+  pas::cli::commands::GetSinkCommand::Streams streams{.result_stream = result_stream,
+                                                      .error_stream = error_stream};
+
   for (const auto& current_state : state) {
-    auto result = adapter_.GetSinks(kTimeout);
-    benchmark::DoNotOptimize(result);
+    pas::cli::commands::GetSinkCommand::Execute(adapter_, streams, kTimeout);
   }
 }
 }  // namespace

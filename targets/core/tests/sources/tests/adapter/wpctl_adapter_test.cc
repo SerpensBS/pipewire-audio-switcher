@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstddef>
 #include <memory>
 #include <optional>
 #include <system_error>
@@ -30,21 +31,18 @@ class WpctlAdapterTest : public ::testing::Test {
 };
 }  // namespace
 
-TEST_F(WpctlAdapterTest, GetActiveSink) {
-  auto result = adapter_.GetActiveSink(kTimeout);
-
-  ASSERT_TRUE(result.has_value());
-
-  EXPECT_TRUE(result->id);
-  EXPECT_FALSE(result->name.empty());
-  EXPECT_TRUE(result->is_active);
-}
-
 TEST_F(WpctlAdapterTest, GetSinks) {
   auto result = adapter_.GetSinks(kTimeout);
 
   ASSERT_TRUE(result.has_value());
   EXPECT_FALSE(result->empty());
+
+  // В выводе должен быть один активный sink.
+  constexpr std::size_t kActiveSinksCount = 1;
+  ASSERT_EQ(kActiveSinksCount,
+            std::ranges::count_if(result.value(), [](const pas::core::adapter::Sink& sink) -> bool {
+              return sink.is_active;
+            }));
 }
 
 /**
