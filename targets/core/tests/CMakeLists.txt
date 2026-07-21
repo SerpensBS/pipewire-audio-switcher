@@ -19,7 +19,9 @@ set_target_properties(${TARGET_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 include(${PROJECT_SOURCE_DIR}/cmake/external_libs.cmake)
 
 # Подключаем библиотеки.
-target_link_libraries(${TARGET_NAME} PRIVATE gtest gtest_main pas::core)
+target_link_libraries(
+    ${TARGET_NAME} PRIVATE gtest gtest_main gmock gmock_main pas::core
+)
 
 # Подключаем тесты.
 include(GoogleTest)
