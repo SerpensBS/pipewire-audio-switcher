@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include <array>
-#include <format>
 #include <sstream>
 #include <string>
 #include <string_view>

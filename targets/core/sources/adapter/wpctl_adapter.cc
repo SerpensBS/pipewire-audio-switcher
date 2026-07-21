@@ -13,12 +13,12 @@
 #include <vector>
 
 #include "adapter/data/sink.hh"
-#include "process/process_executor.hh"
+#include "process/interfaces/iprocess_executor.hh"
 #include "utility/error.hh"
 
 namespace {
 auto GetSinks(const std::regex& regex,
-              const pas::core::process::ProcessExecutor& process_executor,
+              const pas::core::process::IProcessExecutor& process_executor,
               std::chrono::milliseconds timeout)
     -> std::expected<std::vector<pas::core::adapter::Sink>, pas::core::utility::Error> {
   auto wpctl_status_result = process_executor.Execute("/bin/wpctl", {"status"}, timeout);
@@ -67,7 +67,7 @@ auto GetSinks(const std::regex& regex,
 }  // namespace
 namespace pas::core::adapter {
 
-WpctlApapter::WpctlApapter(std::shared_ptr<pas::core::process::ProcessExecutor> process_executor)
+WpctlApapter::WpctlApapter(std::shared_ptr<pas::core::process::IProcessExecutor> process_executor)
     : process_executor_(std::move(process_executor)) {}
 
 auto WpctlApapter::GetSinks(std::chrono::milliseconds timeout) const
@@ -98,7 +98,8 @@ auto WpctlApapter::GetActiveSink(std::chrono::milliseconds timeout) const
   }
 
   const auto& sinks = sinks_result.value();
-  auto sink_it = std::ranges::find_if(sinks, [](const Sink& sink) -> bool { return sink.is_active; });
+  auto sink_it =
+      std::ranges::find_if(sinks, [](const Sink& sink) -> bool { return sink.is_active; });
 
   if (sinks.end() == sink_it) {
     return std::unexpected<utility::Error>({.code = std::make_error_code(std::errc::invalid_seek),

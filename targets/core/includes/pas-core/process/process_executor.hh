@@ -7,11 +7,12 @@
 #include <string>
 #include <vector>
 
+#include "pas-core/process/interfaces/iprocess_executor.hh"
 #include "pas-core/utility/error.hh"
 
 namespace pas::core::process {
 
-class ProcessExecutor {
+class ProcessExecutor : public IProcessExecutor {
  public:
   /**
    * @brief Запускает процесс и возвращает его вывод.
@@ -26,7 +27,7 @@ class ProcessExecutor {
   auto Execute(const std::filesystem::path& command,
                const std::vector<std::string>& args,
                std::chrono::milliseconds timeout) const
-      -> std::expected<std::string, utility::Error>;
+      -> std::expected<std::string, utility::Error> override;
 };
 
 }  // namespace pas::core::process

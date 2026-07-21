@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "pas-core/adapter/data/sink.hh"
-#include "pas-core/process/process_executor.hh"
+#include "pas-core/process/interfaces/iprocess_executor.hh"
 #include "pas-core/utility/error.hh"
 
 namespace pas::core::adapter {
@@ -23,7 +23,7 @@ class WpctlApapter {
   /**
    * @param process_executor Объект для работы с внешними процессами
    */
-  explicit WpctlApapter(std::shared_ptr<pas::core::process::ProcessExecutor> process_executor);
+  explicit WpctlApapter(std::shared_ptr<pas::core::process::IProcessExecutor> process_executor);
 
   /**
    * @brief Получить все готовые к работе sink'и.
@@ -55,7 +55,7 @@ class WpctlApapter {
 
  private:
   // Объект для работы с внешними процессами
-  std::shared_ptr<pas::core::process::ProcessExecutor> process_executor_;
+  std::shared_ptr<pas::core::process::IProcessExecutor> process_executor_;
 };
 }  // namespace pas::core::adapter
 
